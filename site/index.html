@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pdf Rumos</title>
+  <meta name="description" content="Comprima e una PDFs direto no navegador, sem instalar Python ou Ghostscript nos computadores dos usuários.">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:; worker-src 'self' blob:;">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <main class="workspace">
+      <section class="info-ribbon" id="dependency-status" aria-live="polite">
+        Verificando recursos do navegador...
+      </section>
+
+      <nav class="tab-bar" aria-label="Modos do projeto">
+        <button class="tab-button is-active" data-tab-button="compressao">Compressão</button>
+        <button class="tab-button" data-tab-button="uniao">União</button>
+      </nav>
+
+      <section class="tab-panel is-active" data-tab-panel="compressao">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Modo 01</p>
+            <h2>Reduza o tamanho dos arquivos</h2>
+          </div>
+          <p class="section-note">
+            Este modo tenta reduzir o PDF em níveis progressivos e só entrega a versão comprimida quando ela realmente
+            fica menor. Em arquivos que já estão otimizados, o site mantém o original para evitar aumento de tamanho.
+          </p>
+        </div>
+
+        <div class="tool-grid">
+          <article class="tool-card">
+            <div class="card-header">
+              <div>
+                <p class="card-kicker">Entrada</p>
+                <h3>Arquivos para comprimir</h3>
+              </div>
+              <button class="mini-button" id="clear-compress-files" type="button">Limpar lista</button>
+            </div>
+
+            <label class="dropzone" id="compress-dropzone">
+              <input id="compress-input" type="file" accept="application/pdf,.pdf" multiple>
+              <span class="dropzone-title">Arraste os PDFs aqui</span>
+              <span class="dropzone-subtitle">ou clique para selecionar os arquivos</span>
+            </label>
+
+            <div class="preset-card">
+              <div class="preset-header">
+                <div>
+                  <p class="card-kicker">Qualidade</p>
+                  <h4>Escolha o nível de compressão</h4>
+                </div>
+                <p class="preset-note">
+                  Você define o equilíbrio entre tamanho final, legibilidade e velocidade de envio.
+                </p>
+              </div>
+              <div class="preset-list">
+                <label class="preset-option">
+                  <input type="radio" name="compress-preset" value="compacto">
+                  <span class="preset-content">
+                    <strong>Compacto</strong>
+                    <small>Arquivo menor, mais perda visual.</small>
+                    <em>Ideal para envio rápido</em>
+                  </span>
+                </label>
+                <label class="preset-option is-selected">
+                  <input type="radio" name="compress-preset" value="equilibrado" checked>
+                  <span class="preset-content">
+                    <strong>Equilibrado</strong>
+                    <small>Bom ponto entre tamanho e legibilidade.</small>
+                    <em>Recomendado para uso geral</em>
+                  </span>
+                </label>
+                <label class="preset-option">
+                  <input type="radio" name="compress-preset" value="qualidade">
+                  <span class="preset-content">
+                    <strong>Alta qualidade</strong>
+                    <small>Melhor visual, menos redução no tamanho.</small>
+                    <em>Prioriza leitura e aparência</em>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="action-row">
+              <button class="action-button wide" id="start-compress" type="button">Iniciar compressão</button>
+            </div>
+          </article>
+
+          <article class="tool-card">
+            <div class="card-header">
+              <div>
+                <p class="card-kicker">Fila</p>
+                <h3>Arquivos selecionados</h3>
+              </div>
+              <span class="count-pill" id="compress-count">0 arquivo</span>
+            </div>
+            <div class="file-list" id="compress-file-list">
+              <p class="empty-state">Nenhum PDF selecionado ainda.</p>
+            </div>
+
+            <div class="status-card">
+              <p class="card-kicker">Status</p>
+              <div class="status-line" id="compress-status">Aguardando arquivos.</div>
+            </div>
+
+            <div class="result-list" id="compress-results">
+              <p class="empty-state">Os resultados comprimidos aparecerão aqui.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-tab-panel="uniao">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Modo 02</p>
+            <h2>Junte vários PDFs em um único arquivo</h2>
+          </div>
+          <p class="section-note">
+            A ordem da lista define a ordem final do documento. Use as setas para reorganizar antes de gerar o arquivo.
+          </p>
+        </div>
+
+        <div class="tool-grid">
+          <article class="tool-card">
+            <div class="card-header">
+              <div>
+                <p class="card-kicker">Entrada</p>
+                <h3>Arquivos para unir</h3>
+              </div>
+              <button class="mini-button" id="clear-merge-files" type="button">Limpar lista</button>
+            </div>
+
+            <label class="dropzone" id="merge-dropzone">
+              <input id="merge-input" type="file" accept="application/pdf,.pdf" multiple>
+              <span class="dropzone-title">Solte os PDFs para unificar</span>
+              <span class="dropzone-subtitle">ou clique para escolher os arquivos</span>
+            </label>
+
+            <label class="field-group" for="merge-output-name">
+              <span>Nome do arquivo final</span>
+              <input id="merge-output-name" type="text" value="pdfs-unidos" maxlength="80" autocomplete="off">
+            </label>
+
+            <div class="action-row">
+              <button class="action-button wide" id="start-merge" type="button">Gerar PDF unificado</button>
+            </div>
+          </article>
+
+          <article class="tool-card">
+            <div class="card-header">
+              <div>
+                <p class="card-kicker">Ordem final</p>
+                <h3>Lista de união</h3>
+              </div>
+              <span class="count-pill" id="merge-count">0 arquivo</span>
+            </div>
+            <div class="file-list" id="merge-file-list">
+              <p class="empty-state">Adicione pelo menos 2 PDFs para unir.</p>
+            </div>
+
+            <div class="status-card">
+              <p class="card-kicker">Status</p>
+              <div class="status-line" id="merge-status">Aguardando arquivos.</div>
+            </div>
+
+            <div class="result-list" id="merge-results">
+              <p class="empty-state">O PDF final aparecerá aqui para download.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="vendor/pdf-lib.min.js"></script>
+  <script src="vendor/pdf.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
