@@ -22,7 +22,7 @@ $pdfLibJs = Escape-ScriptText (Get-FileText (Join-Path $siteDir "vendor\pdf-lib.
 $jsZipJs = Escape-ScriptText (Get-FileText (Join-Path $siteDir "vendor\jszip.min.js"))
 $pdfJs = Escape-ScriptText (Get-FileText (Join-Path $siteDir "vendor\pdf.min.js"))
 $workerJs = Escape-ScriptText (Get-FileText (Join-Path $siteDir "vendor\pdf.worker.min.js"))
-$faviconFiles = @("favicon-16x16.png", "favicon-32x32.png", "favicon.ico")
+$faviconFile = Join-Path $siteDir "assets\favicon.png"
 
 $inlineHead = "<style>`r`n$stylesCss`r`n</style>"
 $inlineScripts = @"
@@ -54,9 +54,9 @@ $htmlOut = Join-Path $distDir "Pdf Rumos Offline.html"
 
 [System.IO.File]::WriteAllText($htmlOut, $standaloneHtml, [System.Text.Encoding]::UTF8)
 
-foreach ($faviconFile in $faviconFiles) {
-    Copy-Item -LiteralPath (Join-Path $siteDir $faviconFile) -Destination (Join-Path $distDir $faviconFile) -Force
-}
+$assetOutDir = Join-Path $distDir "assets"
+New-Item -ItemType Directory -Path $assetOutDir | Out-Null
+Copy-Item -LiteralPath $faviconFile -Destination (Join-Path $assetOutDir "favicon.png") -Force
 
 if (Test-Path $zipPath) {
     Remove-Item -LiteralPath $zipPath -Force
