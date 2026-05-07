@@ -2,6 +2,7 @@
   const dependencyStatus = document.getElementById("dependency-status");
   const compressInput = document.getElementById("compress-input");
   const mergeInput = document.getElementById("merge-input");
+<<<<<<< HEAD
   const splitInput = document.getElementById("split-input");
   const compressFileList = document.getElementById("compress-file-list");
   const mergeFileList = document.getElementById("merge-file-list");
@@ -21,15 +22,33 @@
   const startCompressButton = document.getElementById("start-compress");
   const startMergeButton = document.getElementById("start-merge");
   const startSplitButton = document.getElementById("start-split");
+=======
+  const compressFileList = document.getElementById("compress-file-list");
+  const mergeFileList = document.getElementById("merge-file-list");
+  const compressResults = document.getElementById("compress-results");
+  const mergeResults = document.getElementById("merge-results");
+  const compressCount = document.getElementById("compress-count");
+  const mergeCount = document.getElementById("merge-count");
+  const compressStatus = document.getElementById("compress-status");
+  const mergeStatus = document.getElementById("merge-status");
+  const mergeOutputName = document.getElementById("merge-output-name");
+  const startCompressButton = document.getElementById("start-compress");
+  const startMergeButton = document.getElementById("start-merge");
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
 
   const state = {
     compressFiles: [],
     mergeFiles: [],
+<<<<<<< HEAD
     splitFile: null,
     compressResults: [],
     mergeResult: null,
     splitParts: [],
     splitZipResult: null,
+=======
+    compressResults: [],
+    mergeResult: null,
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
     processing: false,
   };
 
@@ -64,9 +83,15 @@
   };
 
   function init() {
+<<<<<<< HEAD
     if (!window.PDFLib || !window.pdfjsLib || !window.JSZip) {
       setDependencyError(
         "As bibliotecas de PDF/ZIP n\u00e3o foram carregadas. Verifique se a pasta do projeto est\u00e1 completa e tente abrir a p\u00e1gina novamente."
+=======
+    if (!window.PDFLib || !window.pdfjsLib) {
+      setDependencyError(
+        "As bibliotecas de PDF não foram carregadas. Verifique se a pasta do projeto está completa e tente abrir a página novamente."
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
       );
       disableActions(true);
       return;
@@ -80,10 +105,15 @@
 
     bindTabs();
     bindPresetCards();
+<<<<<<< HEAD
     bindSplitOptions();
     bindDropzone("compress-dropzone", handleCompressDrop);
     bindDropzone("merge-dropzone", handleMergeDrop);
     bindDropzone("split-dropzone", handleSplitDrop);
+=======
+    bindDropzone("compress-dropzone", handleCompressDrop);
+    bindDropzone("merge-dropzone", handleMergeDrop);
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
 
     compressInput.addEventListener("change", (event) => {
       addCompressFiles(event.target.files);
@@ -95,11 +125,14 @@
       mergeInput.value = "";
     });
 
+<<<<<<< HEAD
     splitInput.addEventListener("change", (event) => {
       addSplitFile(event.target.files);
       splitInput.value = "";
     });
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
     document.getElementById("clear-compress-files").addEventListener("click", () => {
       state.compressFiles = [];
       clearResultUrls(state.compressResults);
@@ -120,6 +153,7 @@
       renderMergeResult();
     });
 
+<<<<<<< HEAD
     document.getElementById("clear-split-file").addEventListener("click", () => {
       state.splitFile = null;
       resetSplitResults();
@@ -130,13 +164,20 @@
     startCompressButton.addEventListener("click", processCompression);
     startMergeButton.addEventListener("click", processMerge);
     startSplitButton.addEventListener("click", processSplit);
+=======
+    startCompressButton.addEventListener("click", processCompression);
+    startMergeButton.addEventListener("click", processMerge);
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
 
     renderCompressFiles();
     renderCompressResults();
     renderMergeFiles();
     renderMergeResult();
+<<<<<<< HEAD
     renderSplitFile();
     renderSplitResults();
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   }
 
   function bindTabs() {
@@ -184,6 +225,7 @@
     });
   }
 
+<<<<<<< HEAD
   function bindSplitOptions() {
     const updateRangesState = () => {
       const isPageMode = getSelectedSplitMode() === "pages";
@@ -197,6 +239,8 @@
     updateRangesState();
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function bindDropzone(id, onDropFiles) {
     const dropzone = document.getElementById(id);
     ["dragenter", "dragover"].forEach((eventName) => {
@@ -226,10 +270,13 @@
     addMergeFiles(files);
   }
 
+<<<<<<< HEAD
   function handleSplitDrop(files) {
     addSplitFile(files);
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function addCompressFiles(fileList) {
     const files = filterPdfFiles(fileList);
     if (!files.length) {
@@ -252,6 +299,7 @@
     renderMergeFiles();
   }
 
+<<<<<<< HEAD
   function addSplitFile(fileList) {
     const files = filterPdfFiles(fileList);
     if (!files.length) {
@@ -265,6 +313,8 @@
     renderSplitFile();
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function filterPdfFiles(fileList) {
     return Array.from(fileList || []).filter((file) => {
       const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
@@ -416,6 +466,7 @@
     });
   }
 
+<<<<<<< HEAD
   function renderSplitFile() {
     splitCount.textContent = formatFileCount(state.splitFile ? 1 : 0);
     if (!state.splitFile) {
@@ -504,6 +555,8 @@
     });
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function reorderMergeFiles(index, offset) {
     const targetIndex = index + offset;
     if (targetIndex < 0 || targetIndex >= state.mergeFiles.length) {
@@ -607,6 +660,7 @@
     }
   }
 
+<<<<<<< HEAD
   async function processSplit() {
     if (state.processing) {
       return;
@@ -659,6 +713,8 @@
     }
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   async function mergePdfs(files, onProgress) {
     const mergedPdf = await PDFLib.PDFDocument.create();
     for (let index = 0; index < files.length; index += 1) {
@@ -673,6 +729,7 @@
     return mergedPdf.save({ useObjectStreams: true });
   }
 
+<<<<<<< HEAD
   async function splitPdf(file, mode, rangesText, onProgress) {
     const sourceBytes = await file.arrayBuffer();
     const sourcePdf = await PDFLib.PDFDocument.load(sourceBytes, { ignoreEncryption: true });
@@ -724,6 +781,8 @@
     };
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   async function compressPdf(file, preset, onProgress) {
     const inputBytes = new Uint8Array(await file.arrayBuffer());
     const loadingTask = window.pdfjsLib.getDocument({ data: inputBytes });
@@ -849,6 +908,7 @@
     renderMergeResult();
   }
 
+<<<<<<< HEAD
   function resetSplitResults() {
     clearResultUrls(state.splitParts);
     state.splitParts = [];
@@ -859,6 +919,8 @@
     renderSplitResults();
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function downloadFile(url, name) {
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -876,10 +938,13 @@
     setStatus(mergeStatus, message, type);
   }
 
+<<<<<<< HEAD
   function setSplitStatus(message, type) {
     setStatus(splitStatus, message, type);
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function setStatus(element, message, type) {
     element.textContent = message;
     element.classList.remove("is-running", "is-success", "is-error");
@@ -903,7 +968,10 @@
   function disableActions(disabled) {
     startCompressButton.disabled = disabled;
     startMergeButton.disabled = disabled;
+<<<<<<< HEAD
     startSplitButton.disabled = disabled;
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   }
 
   function getSelectedPreset() {
@@ -911,17 +979,21 @@
     return selected ? selected.value : "equilibrado";
   }
 
+<<<<<<< HEAD
   function getSelectedSplitMode() {
     const selected = document.querySelector('input[name="split-mode"]:checked');
     return selected ? selected.value : "ranges";
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function buildCompressedName(fileName) {
     const dotIndex = fileName.toLowerCase().lastIndexOf(".pdf");
     const baseName = dotIndex > -1 ? fileName.slice(0, dotIndex) : fileName;
     return `${baseName}_comprimido.pdf`;
   }
 
+<<<<<<< HEAD
   function buildSplitPartName(baseName, plan, mode, totalPages) {
     if (mode === "pages") {
       const paddedPage = String(plan.start).padStart(String(totalPages).length, "0");
@@ -1005,6 +1077,8 @@
     return candidate;
   }
 
+=======
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function getSavingsRatio(originalSize, newSize) {
     if (!originalSize || !Number.isFinite(originalSize) || !Number.isFinite(newSize)) {
       return 0;
@@ -1016,13 +1090,21 @@
     return Math.round(getSavingsRatio(originalSize, newSize) * 100);
   }
 
+<<<<<<< HEAD
   function sanitizeOutputName(value, fallbackName = "pdfs-unidos") {
+=======
+  function sanitizeOutputName(value) {
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
     return value
       .trim()
       .replace(/[\\/:*?"<>|]+/g, "-")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
+<<<<<<< HEAD
       .replace(/^-|-$/g, "") || fallbackName;
+=======
+      .replace(/^-|-$/g, "") || "pdfs-unidos";
+>>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   }
 
   function formatBytes(bytes) {
