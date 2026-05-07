@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #ffffff;
   --bg-soft: rgba(255, 255, 255, 0.88);
   --surface: rgba(255, 255, 255, 0.95);
@@ -271,11 +271,7 @@ body::before {
 
 .tab-bar {
   display: inline-grid;
-<<<<<<< HEAD
   grid-template-columns: 1fr 1fr 1fr;
-=======
-  grid-template-columns: 1fr 1fr;
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   gap: 8px;
   padding: 8px;
   border-radius: 20px;
@@ -499,12 +495,8 @@ body::before {
   border-radius: 20px;
 }
 
-<<<<<<< HEAD
 .field-group input,
 .field-group textarea {
-=======
-.field-group input {
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   min-height: 50px;
   padding: 0 16px;
   border: 1px solid var(--line);
@@ -513,7 +505,6 @@ body::before {
   background: #ffffff;
 }
 
-<<<<<<< HEAD
 .field-group textarea {
   min-height: 92px;
   padding-top: 14px;
@@ -525,8 +516,6 @@ body::before {
   opacity: 0.64;
 }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
 .count-pill {
   display: inline-flex;
   align-items: center;

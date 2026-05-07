@@ -1,8 +1,7 @@
-(function () {
+﻿(function () {
   const dependencyStatus = document.getElementById("dependency-status");
   const compressInput = document.getElementById("compress-input");
   const mergeInput = document.getElementById("merge-input");
-<<<<<<< HEAD
   const splitInput = document.getElementById("split-input");
   const compressFileList = document.getElementById("compress-file-list");
   const mergeFileList = document.getElementById("merge-file-list");
@@ -22,33 +21,15 @@
   const startCompressButton = document.getElementById("start-compress");
   const startMergeButton = document.getElementById("start-merge");
   const startSplitButton = document.getElementById("start-split");
-=======
-  const compressFileList = document.getElementById("compress-file-list");
-  const mergeFileList = document.getElementById("merge-file-list");
-  const compressResults = document.getElementById("compress-results");
-  const mergeResults = document.getElementById("merge-results");
-  const compressCount = document.getElementById("compress-count");
-  const mergeCount = document.getElementById("merge-count");
-  const compressStatus = document.getElementById("compress-status");
-  const mergeStatus = document.getElementById("merge-status");
-  const mergeOutputName = document.getElementById("merge-output-name");
-  const startCompressButton = document.getElementById("start-compress");
-  const startMergeButton = document.getElementById("start-merge");
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
 
   const state = {
     compressFiles: [],
     mergeFiles: [],
-<<<<<<< HEAD
     splitFile: null,
     compressResults: [],
     mergeResult: null,
     splitParts: [],
     splitZipResult: null,
-=======
-    compressResults: [],
-    mergeResult: null,
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
     processing: false,
   };
 
@@ -83,15 +64,9 @@
   };
 
   function init() {
-<<<<<<< HEAD
     if (!window.PDFLib || !window.pdfjsLib || !window.JSZip) {
       setDependencyError(
         "As bibliotecas de PDF/ZIP n\u00e3o foram carregadas. Verifique se a pasta do projeto est\u00e1 completa e tente abrir a p\u00e1gina novamente."
-=======
-    if (!window.PDFLib || !window.pdfjsLib) {
-      setDependencyError(
-        "As bibliotecas de PDF não foram carregadas. Verifique se a pasta do projeto está completa e tente abrir a página novamente."
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
       );
       disableActions(true);
       return;
@@ -100,20 +75,15 @@
     configurePdfJsWorker();
 
     setDependencySuccess(
-      "Os arquivos são processados localmente no navegador, sem envio para servidores externos, e não precisam de Python nem Ghostscript no computador do usuário."
+      "Os arquivos s\u00e3o processados localmente no navegador, sem envio para servidores externos, e n\u00e3o precisam de Python nem Ghostscript no computador do usu\u00e1rio."
     );
 
     bindTabs();
     bindPresetCards();
-<<<<<<< HEAD
     bindSplitOptions();
     bindDropzone("compress-dropzone", handleCompressDrop);
     bindDropzone("merge-dropzone", handleMergeDrop);
     bindDropzone("split-dropzone", handleSplitDrop);
-=======
-    bindDropzone("compress-dropzone", handleCompressDrop);
-    bindDropzone("merge-dropzone", handleMergeDrop);
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
 
     compressInput.addEventListener("change", (event) => {
       addCompressFiles(event.target.files);
@@ -125,14 +95,11 @@
       mergeInput.value = "";
     });
 
-<<<<<<< HEAD
     splitInput.addEventListener("change", (event) => {
       addSplitFile(event.target.files);
       splitInput.value = "";
     });
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
     document.getElementById("clear-compress-files").addEventListener("click", () => {
       state.compressFiles = [];
       clearResultUrls(state.compressResults);
@@ -153,7 +120,6 @@
       renderMergeResult();
     });
 
-<<<<<<< HEAD
     document.getElementById("clear-split-file").addEventListener("click", () => {
       state.splitFile = null;
       resetSplitResults();
@@ -164,20 +130,13 @@
     startCompressButton.addEventListener("click", processCompression);
     startMergeButton.addEventListener("click", processMerge);
     startSplitButton.addEventListener("click", processSplit);
-=======
-    startCompressButton.addEventListener("click", processCompression);
-    startMergeButton.addEventListener("click", processMerge);
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
 
     renderCompressFiles();
     renderCompressResults();
     renderMergeFiles();
     renderMergeResult();
-<<<<<<< HEAD
     renderSplitFile();
     renderSplitResults();
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   }
 
   function bindTabs() {
@@ -225,7 +184,6 @@
     });
   }
 
-<<<<<<< HEAD
   function bindSplitOptions() {
     const updateRangesState = () => {
       const isPageMode = getSelectedSplitMode() === "pages";
@@ -239,8 +197,6 @@
     updateRangesState();
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function bindDropzone(id, onDropFiles) {
     const dropzone = document.getElementById(id);
     ["dragenter", "dragover"].forEach((eventName) => {
@@ -270,13 +226,10 @@
     addMergeFiles(files);
   }
 
-<<<<<<< HEAD
   function handleSplitDrop(files) {
     addSplitFile(files);
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function addCompressFiles(fileList) {
     const files = filterPdfFiles(fileList);
     if (!files.length) {
@@ -284,7 +237,7 @@
     }
     state.compressFiles = state.compressFiles.concat(files);
     resetCompressResults();
-    setCompressStatus(`${state.compressFiles.length} arquivo(s) pronto(s) para compressão.`, "");
+    setCompressStatus(`${state.compressFiles.length} arquivo(s) pronto(s) para compress\u00e3o.`, "");
     renderCompressFiles();
   }
 
@@ -295,11 +248,10 @@
     }
     state.mergeFiles = state.mergeFiles.concat(files);
     resetMergeResult();
-    setMergeStatus(`${state.mergeFiles.length} arquivo(s) adicionado(s) para união.`, "");
+    setMergeStatus(`${state.mergeFiles.length} arquivo(s) adicionado(s) para uni\u00e3o.`, "");
     renderMergeFiles();
   }
 
-<<<<<<< HEAD
   function addSplitFile(fileList) {
     const files = filterPdfFiles(fileList);
     if (!files.length) {
@@ -313,8 +265,6 @@
     renderSplitFile();
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function filterPdfFiles(fileList) {
     return Array.from(fileList || []).filter((file) => {
       const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
@@ -351,7 +301,7 @@
       button.addEventListener("click", () => {
         state.compressFiles.splice(Number(button.dataset.removeCompress), 1);
         resetCompressResults();
-        setCompressStatus("Lista de compressão atualizada.", "");
+        setCompressStatus("Lista de compress\u00e3o atualizada.", "");
         renderCompressFiles();
       });
     });
@@ -359,7 +309,7 @@
 
   function renderCompressResults() {
     if (!state.compressResults.length) {
-      compressResults.innerHTML = '<p class="empty-state">Os resultados comprimidos aparecerão aqui.</p>';
+      compressResults.innerHTML = '<p class="empty-state">Os resultados comprimidos aparecer\u00e3o aqui.</p>';
       return;
     }
 
@@ -367,7 +317,7 @@
     state.compressResults.forEach((result, index) => {
       const savedPercent = getSavingsPercent(result.originalSize, result.compressedSize);
       const badgeClass = result.keptOriginal ? "is-neutral" : "is-success";
-      const badgeText = result.keptOriginal ? "Mantido original" : `Redução ${savedPercent}%`;
+      const badgeText = result.keptOriginal ? "Mantido original" : `Redu\u00e7\u00e3o ${savedPercent}%`;
       const item = document.createElement("div");
       item.className = `result-item ${result.keptOriginal ? "is-original" : "is-optimized"}`;
       item.innerHTML = `
@@ -375,7 +325,7 @@
           <div class="result-meta">
             <div class="result-name">${escapeHtml(result.outputName)}</div>
             <div class="result-subline">
-              Original: ${formatBytes(result.originalSize)} | Novo: ${formatBytes(result.compressedSize)}${result.keptOriginal ? "" : ` | Redução: ${savedPercent}%`}
+              Original: ${formatBytes(result.originalSize)} | Novo: ${formatBytes(result.compressedSize)}${result.keptOriginal ? "" : ` | Redu\u00e7\u00e3o: ${savedPercent}%`}
             </div>
             <div class="result-note">${escapeHtml(result.note)}</div>
           </div>
@@ -435,7 +385,7 @@
       button.addEventListener("click", () => {
         state.mergeFiles.splice(Number(button.dataset.removeMerge), 1);
         resetMergeResult();
-        setMergeStatus("Lista de união atualizada.", "");
+        setMergeStatus("Lista de uni\u00e3o atualizada.", "");
         renderMergeFiles();
       });
     });
@@ -443,7 +393,7 @@
 
   function renderMergeResult() {
     if (!state.mergeResult) {
-      mergeResults.innerHTML = '<p class="empty-state">O PDF final aparecerá aqui para download.</p>';
+      mergeResults.innerHTML = '<p class="empty-state">O PDF final aparecer\u00e1 aqui para download.</p>';
       return;
     }
 
@@ -466,7 +416,6 @@
     });
   }
 
-<<<<<<< HEAD
   function renderSplitFile() {
     splitCount.textContent = formatFileCount(state.splitFile ? 1 : 0);
     if (!state.splitFile) {
@@ -555,8 +504,6 @@
     });
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function reorderMergeFiles(index, offset) {
     const targetIndex = index + offset;
     if (targetIndex < 0 || targetIndex >= state.mergeFiles.length) {
@@ -566,7 +513,7 @@
     state.mergeFiles[index] = state.mergeFiles[targetIndex];
     state.mergeFiles[targetIndex] = current;
     resetMergeResult();
-    setMergeStatus("Ordem da união atualizada.", "");
+    setMergeStatus("Ordem da uni\u00e3o atualizada.", "");
     renderMergeFiles();
   }
 
@@ -587,7 +534,7 @@
     renderCompressResults();
 
     const preset = compressionPresets[getSelectedPreset()];
-    setCompressStatus(`Iniciando compressão em modo ${preset.label}...`, "running");
+    setCompressStatus(`Iniciando compress\u00e3o em modo ${preset.label}...`, "running");
 
     try {
       for (let i = 0; i < state.compressFiles.length; i += 1) {
@@ -609,10 +556,10 @@
         renderCompressResults();
       }
 
-      setCompressStatus("Compressão concluída. Os arquivos estão prontos para download.", "success");
+      setCompressStatus("Compress\u00e3o conclu\u00edda. Os arquivos est\u00e3o prontos para download.", "success");
     } catch (error) {
       console.error(error);
-      setCompressStatus(`Falha na compressão: ${error.message}`, "error");
+      setCompressStatus(`Falha na compress\u00e3o: ${error.message}`, "error");
     } finally {
       state.processing = false;
       disableActions(false);
@@ -653,14 +600,13 @@
       setMergeStatus("PDF final gerado com sucesso.", "success");
     } catch (error) {
       console.error(error);
-      setMergeStatus(`Falha na união: ${error.message}`, "error");
+      setMergeStatus(`Falha na uni\u00e3o: ${error.message}`, "error");
     } finally {
       state.processing = false;
       disableActions(false);
     }
   }
 
-<<<<<<< HEAD
   async function processSplit() {
     if (state.processing) {
       return;
@@ -713,8 +659,6 @@
     }
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   async function mergePdfs(files, onProgress) {
     const mergedPdf = await PDFLib.PDFDocument.create();
     for (let index = 0; index < files.length; index += 1) {
@@ -729,7 +673,6 @@
     return mergedPdf.save({ useObjectStreams: true });
   }
 
-<<<<<<< HEAD
   async function splitPdf(file, mode, rangesText, onProgress) {
     const sourceBytes = await file.arrayBuffer();
     const sourcePdf = await PDFLib.PDFDocument.load(sourceBytes, { ignoreEncryption: true });
@@ -781,8 +724,6 @@
     };
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   async function compressPdf(file, preset, onProgress) {
     const inputBytes = new Uint8Array(await file.arrayBuffer());
     const loadingTask = window.pdfjsLib.getDocument({ data: inputBytes });
@@ -812,7 +753,7 @@
       return {
         blob: file,
         keptOriginal: true,
-        note: "Esse PDF já estava otimizado para a compressão web. Mantivemos o arquivo original para não aumentar o tamanho.",
+        note: "Esse PDF j\u00e1 estava otimizado para a compress\u00e3o web. Mantivemos o arquivo original para n\u00e3o aumentar o tamanho.",
       };
     }
 
@@ -827,14 +768,14 @@
     const outputPdf = await PDFLib.PDFDocument.create();
 
     for (let pageNumber = 1; pageNumber <= sourcePdf.numPages; pageNumber += 1) {
-      onProgress(`renderizando página ${pageNumber} de ${sourcePdf.numPages}...`);
+      onProgress(`renderizando p\u00e1gina ${pageNumber} de ${sourcePdf.numPages}...`);
       const sourcePage = await sourcePdf.getPage(pageNumber);
       const baseViewport = sourcePage.getViewport({ scale: 1 });
       const viewport = sourcePage.getViewport({ scale: attempt.scale });
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d", { alpha: false });
       if (!context) {
-        throw new Error("O navegador não conseguiu criar o canvas de processamento.");
+        throw new Error("O navegador n\u00e3o conseguiu criar o canvas de processamento.");
       }
       canvas.width = Math.max(1, Math.floor(viewport.width));
       canvas.height = Math.max(1, Math.floor(viewport.height));
@@ -869,7 +810,7 @@
       canvas.toBlob(
         (blob) => {
           if (!blob) {
-            reject(new Error("Não foi possível converter a página para imagem."));
+            reject(new Error("N\u00e3o foi poss\u00edvel converter a p\u00e1gina para imagem."));
             return;
           }
           resolve(blob);
@@ -908,7 +849,6 @@
     renderMergeResult();
   }
 
-<<<<<<< HEAD
   function resetSplitResults() {
     clearResultUrls(state.splitParts);
     state.splitParts = [];
@@ -919,8 +859,6 @@
     renderSplitResults();
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function downloadFile(url, name) {
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -938,13 +876,10 @@
     setStatus(mergeStatus, message, type);
   }
 
-<<<<<<< HEAD
   function setSplitStatus(message, type) {
     setStatus(splitStatus, message, type);
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function setStatus(element, message, type) {
     element.textContent = message;
     element.classList.remove("is-running", "is-success", "is-error");
@@ -968,10 +903,7 @@
   function disableActions(disabled) {
     startCompressButton.disabled = disabled;
     startMergeButton.disabled = disabled;
-<<<<<<< HEAD
     startSplitButton.disabled = disabled;
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   }
 
   function getSelectedPreset() {
@@ -979,21 +911,17 @@
     return selected ? selected.value : "equilibrado";
   }
 
-<<<<<<< HEAD
   function getSelectedSplitMode() {
     const selected = document.querySelector('input[name="split-mode"]:checked');
     return selected ? selected.value : "ranges";
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function buildCompressedName(fileName) {
     const dotIndex = fileName.toLowerCase().lastIndexOf(".pdf");
     const baseName = dotIndex > -1 ? fileName.slice(0, dotIndex) : fileName;
     return `${baseName}_comprimido.pdf`;
   }
 
-<<<<<<< HEAD
   function buildSplitPartName(baseName, plan, mode, totalPages) {
     if (mode === "pages") {
       const paddedPage = String(plan.start).padStart(String(totalPages).length, "0");
@@ -1077,8 +1005,6 @@
     return candidate;
   }
 
-=======
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   function getSavingsRatio(originalSize, newSize) {
     if (!originalSize || !Number.isFinite(originalSize) || !Number.isFinite(newSize)) {
       return 0;
@@ -1090,21 +1016,13 @@
     return Math.round(getSavingsRatio(originalSize, newSize) * 100);
   }
 
-<<<<<<< HEAD
   function sanitizeOutputName(value, fallbackName = "pdfs-unidos") {
-=======
-  function sanitizeOutputName(value) {
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
     return value
       .trim()
       .replace(/[\\/:*?"<>|]+/g, "-")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
-<<<<<<< HEAD
       .replace(/^-|-$/g, "") || fallbackName;
-=======
-      .replace(/^-|-$/g, "") || "pdfs-unidos";
->>>>>>> 474f7cacba6e71f8609d15411ae07d0fbaea4ca3
   }
 
   function formatBytes(bytes) {
