@@ -75,7 +75,7 @@
     configurePdfJsWorker();
 
     setDependencySuccess(
-      "Os arquivos s\u00e3o processados localmente no navegador, sem envio para servidores externos, e n\u00e3o precisam de Python nem Ghostscript no computador do usu\u00e1rio."
+      "Todos os arquivos são processados com segurança no navegador, garantindo rapidez, privacidade e total controle durante cada operação."
     );
 
     bindTabs();
@@ -237,7 +237,7 @@
     }
     state.compressFiles = state.compressFiles.concat(files);
     resetCompressResults();
-    setCompressStatus(`${state.compressFiles.length} arquivo(s) pronto(s) para compress\u00e3o.`, "");
+    setCompressStatus(`${state.compressFiles.length} arquivo(s) pronto(s) para compressÃ£o.`, "");
     renderCompressFiles();
   }
 
@@ -248,7 +248,7 @@
     }
     state.mergeFiles = state.mergeFiles.concat(files);
     resetMergeResult();
-    setMergeStatus(`${state.mergeFiles.length} arquivo(s) adicionado(s) para uni\u00e3o.`, "");
+    setMergeStatus(`${state.mergeFiles.length} arquivo(s) adicionado(s) para uniÃ£o.`, "");
     renderMergeFiles();
   }
 
@@ -301,7 +301,7 @@
       button.addEventListener("click", () => {
         state.compressFiles.splice(Number(button.dataset.removeCompress), 1);
         resetCompressResults();
-        setCompressStatus("Lista de compress\u00e3o atualizada.", "");
+        setCompressStatus("Lista de compressÃ£o atualizada.", "");
         renderCompressFiles();
       });
     });
@@ -309,7 +309,7 @@
 
   function renderCompressResults() {
     if (!state.compressResults.length) {
-      compressResults.innerHTML = '<p class="empty-state">Os resultados comprimidos aparecer\u00e3o aqui.</p>';
+      compressResults.innerHTML = '<p class="empty-state">Os resultados comprimidos aparecerÃ£o aqui.</p>';
       return;
     }
 
@@ -317,7 +317,7 @@
     state.compressResults.forEach((result, index) => {
       const savedPercent = getSavingsPercent(result.originalSize, result.compressedSize);
       const badgeClass = result.keptOriginal ? "is-neutral" : "is-success";
-      const badgeText = result.keptOriginal ? "Mantido original" : `Redu\u00e7\u00e3o ${savedPercent}%`;
+      const badgeText = result.keptOriginal ? "Mantido original" : `ReduÃ§Ã£o ${savedPercent}%`;
       const item = document.createElement("div");
       item.className = `result-item ${result.keptOriginal ? "is-original" : "is-optimized"}`;
       item.innerHTML = `
@@ -325,7 +325,7 @@
           <div class="result-meta">
             <div class="result-name">${escapeHtml(result.outputName)}</div>
             <div class="result-subline">
-              Original: ${formatBytes(result.originalSize)} | Novo: ${formatBytes(result.compressedSize)}${result.keptOriginal ? "" : ` | Redu\u00e7\u00e3o: ${savedPercent}%`}
+              Original: ${formatBytes(result.originalSize)} | Novo: ${formatBytes(result.compressedSize)}${result.keptOriginal ? "" : ` | ReduÃ§Ã£o: ${savedPercent}%`}
             </div>
             <div class="result-note">${escapeHtml(result.note)}</div>
           </div>
@@ -385,7 +385,7 @@
       button.addEventListener("click", () => {
         state.mergeFiles.splice(Number(button.dataset.removeMerge), 1);
         resetMergeResult();
-        setMergeStatus("Lista de uni\u00e3o atualizada.", "");
+        setMergeStatus("Lista de uniÃ£o atualizada.", "");
         renderMergeFiles();
       });
     });
@@ -393,7 +393,7 @@
 
   function renderMergeResult() {
     if (!state.mergeResult) {
-      mergeResults.innerHTML = '<p class="empty-state">O PDF final aparecer\u00e1 aqui para download.</p>';
+      mergeResults.innerHTML = '<p class="empty-state">O PDF final aparecerÃ¡ aqui para download.</p>';
       return;
     }
 
@@ -446,31 +446,12 @@
   }
 
   function renderSplitResults() {
-    if (!state.splitZipResult && !state.splitParts.length) {
+    if (!state.splitParts.length) {
       splitResults.innerHTML = '<p class="empty-state">Os PDFs gerados aparecer&atilde;o aqui para download.</p>';
       return;
     }
 
     splitResults.innerHTML = "";
-
-    if (state.splitZipResult) {
-      const zipItem = document.createElement("div");
-      zipItem.className = "result-item is-optimized";
-      zipItem.innerHTML = `
-        <div class="result-item-head">
-          <div class="result-meta">
-            <div class="result-name">${escapeHtml(state.splitZipResult.outputName)}</div>
-            <div class="result-subline">${formatBytes(state.splitZipResult.size)} com ${state.splitZipResult.count} arquivo(s) PDF.</div>
-            <div class="result-note">O download autom&aacute;tico do ZIP foi iniciado. Voc&ecirc; tamb&eacute;m pode baixar novamente por aqui.</div>
-          </div>
-          <div class="result-actions">
-            <span class="result-badge is-success">ZIP pronto</span>
-            <button class="download-button" type="button" id="download-split-zip">Baixar ZIP</button>
-          </div>
-        </div>
-      `;
-      splitResults.appendChild(zipItem);
-    }
 
     state.splitParts.forEach((part, index) => {
       const item = document.createElement("div");
@@ -479,7 +460,7 @@
         <div class="result-item-head">
           <div class="result-meta">
             <div class="result-name">${escapeHtml(part.outputName)}</div>
-            <div class="result-subline">P&aacute;ginas: ${escapeHtml(part.pageLabel)} | ${formatBytes(part.size)}</div>
+            <div class="result-subline">Páginas: ${escapeHtml(part.pageLabel)} | ${formatBytes(part.size)}</div>
           </div>
           <div class="result-actions">
             <button class="download-button" type="button" data-download-split-part="${index}">Baixar PDF</button>
@@ -488,13 +469,6 @@
       `;
       splitResults.appendChild(item);
     });
-
-    const zipButton = document.getElementById("download-split-zip");
-    if (zipButton) {
-      zipButton.addEventListener("click", () => {
-        downloadFile(state.splitZipResult.url, state.splitZipResult.outputName);
-      });
-    }
 
     splitResults.querySelectorAll("[data-download-split-part]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -513,7 +487,7 @@
     state.mergeFiles[index] = state.mergeFiles[targetIndex];
     state.mergeFiles[targetIndex] = current;
     resetMergeResult();
-    setMergeStatus("Ordem da uni\u00e3o atualizada.", "");
+    setMergeStatus("Ordem da uniÃ£o atualizada.", "");
     renderMergeFiles();
   }
 
@@ -534,7 +508,7 @@
     renderCompressResults();
 
     const preset = compressionPresets[getSelectedPreset()];
-    setCompressStatus(`Iniciando compress\u00e3o em modo ${preset.label}...`, "running");
+    setCompressStatus(`Iniciando compressÃ£o em modo ${preset.label}...`, "running");
 
     try {
       for (let i = 0; i < state.compressFiles.length; i += 1) {
@@ -556,10 +530,10 @@
         renderCompressResults();
       }
 
-      setCompressStatus("Compress\u00e3o conclu\u00edda. Os arquivos est\u00e3o prontos para download.", "success");
+      setCompressStatus("CompressÃ£o concluÃ­da. Os arquivos estÃ£o prontos para download.", "success");
     } catch (error) {
       console.error(error);
-      setCompressStatus(`Falha na compress\u00e3o: ${error.message}`, "error");
+      setCompressStatus(`Falha na compressÃ£o: ${error.message}`, "error");
     } finally {
       state.processing = false;
       disableActions(false);
@@ -600,7 +574,7 @@
       setMergeStatus("PDF final gerado com sucesso.", "success");
     } catch (error) {
       console.error(error);
-      setMergeStatus(`Falha na uni\u00e3o: ${error.message}`, "error");
+      setMergeStatus(`Falha na uniÃ£o: ${error.message}`, "error");
     } finally {
       state.processing = false;
       disableActions(false);
@@ -638,17 +612,8 @@
         };
       });
 
-      const zipUrl = URL.createObjectURL(result.zipBlob);
-      state.splitZipResult = {
-        outputName: "pdf_dividido.zip",
-        url: zipUrl,
-        size: result.zipBlob.size,
-        count: state.splitParts.length,
-      };
-
       renderSplitResults();
-      downloadFile(zipUrl, state.splitZipResult.outputName);
-      setSplitStatus(`Divis\u00e3o conclu\u00edda. ${state.splitParts.length} arquivo(s) PDF gerado(s).`, "success");
+      setSplitStatus(`Divisão concluída. ${state.splitParts.length} arquivo(s) PDF gerado(s).`, "success");
     } catch (error) {
       console.error(error);
       resetSplitResults();
@@ -702,25 +667,8 @@
       });
     }
 
-    const zip = new window.JSZip();
-    parts.forEach((part) => {
-      zip.file(part.outputName, part.bytes);
-    });
-
-    onProgress("Compactando arquivos em ZIP...");
-    const zipBlob = await zip.generateAsync(
-      {
-        type: "blob",
-        compression: "DEFLATE",
-      },
-      (metadata) => {
-        onProgress(`Compactando arquivos em ZIP... ${Math.round(metadata.percent)}%`);
-      }
-    );
-
     return {
       parts,
-      zipBlob,
     };
   }
 
@@ -753,7 +701,7 @@
       return {
         blob: file,
         keptOriginal: true,
-        note: "Esse PDF j\u00e1 estava otimizado para a compress\u00e3o web. Mantivemos o arquivo original para n\u00e3o aumentar o tamanho.",
+        note: "Esse PDF jÃ¡ estava otimizado para a compressÃ£o web. Mantivemos o arquivo original para nÃ£o aumentar o tamanho.",
       };
     }
 
@@ -768,14 +716,14 @@
     const outputPdf = await PDFLib.PDFDocument.create();
 
     for (let pageNumber = 1; pageNumber <= sourcePdf.numPages; pageNumber += 1) {
-      onProgress(`renderizando p\u00e1gina ${pageNumber} de ${sourcePdf.numPages}...`);
+      onProgress(`renderizando pÃ¡gina ${pageNumber} de ${sourcePdf.numPages}...`);
       const sourcePage = await sourcePdf.getPage(pageNumber);
       const baseViewport = sourcePage.getViewport({ scale: 1 });
       const viewport = sourcePage.getViewport({ scale: attempt.scale });
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d", { alpha: false });
       if (!context) {
-        throw new Error("O navegador n\u00e3o conseguiu criar o canvas de processamento.");
+        throw new Error("O navegador nÃ£o conseguiu criar o canvas de processamento.");
       }
       canvas.width = Math.max(1, Math.floor(viewport.width));
       canvas.height = Math.max(1, Math.floor(viewport.height));
@@ -810,7 +758,7 @@
       canvas.toBlob(
         (blob) => {
           if (!blob) {
-            reject(new Error("N\u00e3o foi poss\u00edvel converter a p\u00e1gina para imagem."));
+            reject(new Error("NÃ£o foi possÃ­vel converter a pÃ¡gina para imagem."));
             return;
           }
           resolve(blob);

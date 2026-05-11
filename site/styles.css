@@ -250,11 +250,13 @@ body::before {
   margin-top: 0;
 }
 
-.info-ribbon {
+  .info-ribbon {
   margin-bottom: 18px;
   padding: 16px 18px;
   border-radius: 18px;
   font-size: 0.96rem;
+  text-align: center;
+  line-height: 1.5;
 }
 
 .info-ribbon.is-success {

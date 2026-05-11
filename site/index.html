@@ -1,15 +1,15 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pdf Rumos</title>
-  <meta name="description" content="Comprima e una PDFs direto no navegador, sem instalar Python ou Ghostscript nos computadores dos usu&aacute;rios.">
+  <meta name="description" content="Comprima e una PDFs direto no navegador, sem instalar Python ou Ghostscript nos computadores dos usuários.">
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:; worker-src 'self' blob:;">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()">
-  <link rel="icon" type="image/png" href="./assets/favicon.png">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="icon" type="image/x-icon" href="./favicon.ico">
 </head>
 <body>
   <div class="page-shell">
@@ -31,8 +31,8 @@
             <h2>Reduza o tamanho dos arquivos</h2>
           </div>
           <p class="section-note">
-            Este modo tenta reduzir o PDF em n&iacute;veis progressivos e s&oacute; entrega a vers&atilde;o comprimida quando ela realmente
-            fica menor. Em arquivos que j&aacute; est&atilde;o otimizados, o site mant&eacute;m o original para evitar aumento de tamanho.
+            Este modo tenta reduzir o PDF em níveis progressivos e só entrega a versão comprimida quando ela realmente
+            fica menor. Em arquivos que já estão otimizados, o site mantém o original para evitar aumento de tamanho.
           </p>
         </div>
 
@@ -56,10 +56,10 @@
               <div class="preset-header">
                 <div>
                   <p class="card-kicker">Qualidade</p>
-                  <h4>Escolha o n&iacute;vel de compress&atilde;o</h4>
+                  <h4>Escolha o nível de compressão</h4>
                 </div>
                 <p class="preset-note">
-                  Voc&ecirc; define o equil&iacute;brio entre tamanho final, legibilidade e velocidade de envio.
+                  Você define o equilíbrio entre tamanho final, legibilidade e velocidade de envio.
                 </p>
               </div>
               <div class="preset-list">
@@ -68,7 +68,7 @@
                   <span class="preset-content">
                     <strong>Compacto</strong>
                     <small>Arquivo menor, mais perda visual.</small>
-                    <em>Ideal para envio r&aacute;pido</em>
+                    <em>Ideal para envio rápido</em>
                   </span>
                 </label>
                 <label class="preset-option is-selected">
@@ -83,15 +83,15 @@
                   <input type="radio" name="compress-preset" value="qualidade">
                   <span class="preset-content">
                     <strong>Alta qualidade</strong>
-                    <small>Melhor visual, menos redu&ccedil;&atilde;o no tamanho.</small>
-                    <em>Prioriza leitura e apar&ecirc;ncia</em>
+                    <small>Melhor visual, menos redução no tamanho.</small>
+                    <em>Prioriza leitura e aparência</em>
                   </span>
                 </label>
               </div>
             </div>
 
             <div class="action-row">
-              <button class="action-button wide" id="start-compress" type="button">Iniciar compress&atilde;o</button>
+              <button class="action-button wide" id="start-compress" type="button">Iniciar compressão</button>
             </div>
           </article>
 
@@ -113,7 +113,6 @@
             </div>
 
             <div class="result-list" id="compress-results">
-              <p class="empty-state">Os resultados comprimidos aparecer&atilde;o aqui.</p>
             </div>
           </article>
         </div>
@@ -123,7 +122,7 @@
         <div class="section-heading">
           <div>
             <p class="section-kicker">Modo 02</p>
-            <h2>Junte v&aacute;rios PDFs em um &uacute;nico arquivo</h2>
+            <h2>Junte vários PDFs em um único arquivo</h2>
           </div>
           <p class="section-note">
             A ordem da lista define a ordem final do documento. Use as setas para reorganizar antes de gerar o arquivo.
@@ -160,7 +159,7 @@
             <div class="card-header">
               <div>
                 <p class="card-kicker">Ordem final</p>
-                <h3>Lista de uni&atilde;o</h3>
+                <h3>Lista de união</h3>
               </div>
               <span class="count-pill" id="merge-count">0 arquivo</span>
             </div>
@@ -174,11 +173,11 @@
             </div>
 
             <div class="result-list" id="merge-results">
-              <p class="empty-state">O PDF final aparecer&aacute; aqui para download.</p>
             </div>
           </article>
         </div>
       </section>
+
 
       <section class="tab-panel" data-tab-panel="divisao">
         <div class="section-heading">
@@ -187,8 +186,7 @@
             <h2>Divida um PDF em partes</h2>
           </div>
           <p class="section-note">
-            Escolha intervalos personalizados ou gere um arquivo separado para cada p&aacute;gina. O resultado tamb&eacute;m
-            &eacute; compactado automaticamente em ZIP para facilitar o download.
+            Escolha intervalos personalizados ou gere um arquivo separado para cada página. Cada arquivo fica disponível para download individual.
           </p>
         </div>
 
@@ -266,7 +264,7 @@
             </div>
 
             <div class="result-list" id="split-results">
-              <p class="empty-state">Os PDFs gerados aparecer&atilde;o aqui para download.</p>
+
             </div>
           </article>
         </div>
@@ -274,9 +272,10 @@
     </main>
   </div>
 
-  <script src="vendor/pdf-lib.min.js"></script>
-  <script src="vendor/jszip.min.js"></script>
-  <script src="vendor/pdf.min.js"></script>
-  <script src="app.js"></script>
+  <script src="./vendor/pdf-lib.min.js"></script>
+  <script src="./vendor/jszip.min.js"></script>
+  <script src="./vendor/pdf.min.js"></script>
+  <script src="./vendor/pdf.worker.min.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
