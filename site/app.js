@@ -237,7 +237,7 @@
     }
     state.compressFiles = state.compressFiles.concat(files);
     resetCompressResults();
-    setCompressStatus(`${state.compressFiles.length} arquivo(s) pronto(s) para compressÃ£o.`, "");
+    setCompressStatus(`${state.compressFiles.length} arquivo(s) pronto(s) para compressão.`, "");
     renderCompressFiles();
   }
 
@@ -248,7 +248,7 @@
     }
     state.mergeFiles = state.mergeFiles.concat(files);
     resetMergeResult();
-    setMergeStatus(`${state.mergeFiles.length} arquivo(s) adicionado(s) para uniÃ£o.`, "");
+    setMergeStatus(`${state.mergeFiles.length} arquivo(s) adicionado(s) para união.`, "");
     renderMergeFiles();
   }
 
@@ -301,7 +301,7 @@
       button.addEventListener("click", () => {
         state.compressFiles.splice(Number(button.dataset.removeCompress), 1);
         resetCompressResults();
-        setCompressStatus("Lista de compressÃ£o atualizada.", "");
+        setCompressStatus("Lista de compressão atualizada.", "");
         renderCompressFiles();
       });
     });
@@ -309,7 +309,7 @@
 
   function renderCompressResults() {
     if (!state.compressResults.length) {
-      compressResults.innerHTML = '<p class="empty-state">Os resultados comprimidos aparecerÃ£o aqui.</p>';
+      compressResults.innerHTML = '<p class="empty-state">Os resultados comprimidos aparecerão aqui.</p>';
       return;
     }
 
@@ -317,7 +317,7 @@
     state.compressResults.forEach((result, index) => {
       const savedPercent = getSavingsPercent(result.originalSize, result.compressedSize);
       const badgeClass = result.keptOriginal ? "is-neutral" : "is-success";
-      const badgeText = result.keptOriginal ? "Mantido original" : `ReduÃ§Ã£o ${savedPercent}%`;
+      const badgeText = result.keptOriginal ? "Mantido original" : `Redução ${savedPercent}%`;
       const item = document.createElement("div");
       item.className = `result-item ${result.keptOriginal ? "is-original" : "is-optimized"}`;
       item.innerHTML = `
@@ -325,7 +325,7 @@
           <div class="result-meta">
             <div class="result-name">${escapeHtml(result.outputName)}</div>
             <div class="result-subline">
-              Original: ${formatBytes(result.originalSize)} | Novo: ${formatBytes(result.compressedSize)}${result.keptOriginal ? "" : ` | ReduÃ§Ã£o: ${savedPercent}%`}
+              Original: ${formatBytes(result.originalSize)} | Novo: ${formatBytes(result.compressedSize)}${result.keptOriginal ? "" : ` | Redução: ${savedPercent}%`}
             </div>
             <div class="result-note">${escapeHtml(result.note)}</div>
           </div>
@@ -385,7 +385,7 @@
       button.addEventListener("click", () => {
         state.mergeFiles.splice(Number(button.dataset.removeMerge), 1);
         resetMergeResult();
-        setMergeStatus("Lista de uniÃ£o atualizada.", "");
+        setMergeStatus("Lista de união atualizada.", "");
         renderMergeFiles();
       });
     });
@@ -393,7 +393,7 @@
 
   function renderMergeResult() {
     if (!state.mergeResult) {
-      mergeResults.innerHTML = '<p class="empty-state">O PDF final aparecerÃ¡ aqui para download.</p>';
+      mergeResults.innerHTML = '<p class="empty-state">O PDF final aparecerá aqui para download.</p>';
       return;
     }
 
@@ -487,7 +487,7 @@
     state.mergeFiles[index] = state.mergeFiles[targetIndex];
     state.mergeFiles[targetIndex] = current;
     resetMergeResult();
-    setMergeStatus("Ordem da uniÃ£o atualizada.", "");
+    setMergeStatus("Ordem da união atualizada.", "");
     renderMergeFiles();
   }
 
@@ -508,7 +508,7 @@
     renderCompressResults();
 
     const preset = compressionPresets[getSelectedPreset()];
-    setCompressStatus(`Iniciando compressÃ£o em modo ${preset.label}...`, "running");
+    setCompressStatus(`Iniciando compressão em modo ${preset.label}...`, "running");
 
     try {
       for (let i = 0; i < state.compressFiles.length; i += 1) {
@@ -530,10 +530,10 @@
         renderCompressResults();
       }
 
-      setCompressStatus("CompressÃ£o concluÃ­da. Os arquivos estÃ£o prontos para download.", "success");
+      setCompressStatus("Compressão concluída. Os arquivos estão prontos para download.", "success");
     } catch (error) {
       console.error(error);
-      setCompressStatus(`Falha na compressÃ£o: ${error.message}`, "error");
+      setCompressStatus(`Falha na compressão: ${error.message}`, "error");
     } finally {
       state.processing = false;
       disableActions(false);
@@ -574,7 +574,7 @@
       setMergeStatus("PDF final gerado com sucesso.", "success");
     } catch (error) {
       console.error(error);
-      setMergeStatus(`Falha na uniÃ£o: ${error.message}`, "error");
+      setMergeStatus(`Falha na união: ${error.message}`, "error");
     } finally {
       state.processing = false;
       disableActions(false);
@@ -701,7 +701,7 @@
       return {
         blob: file,
         keptOriginal: true,
-        note: "Esse PDF jÃ¡ estava otimizado para a compressÃ£o web. Mantivemos o arquivo original para nÃ£o aumentar o tamanho.",
+        note: "Esse PDF já estava otimizado para a compressão web. Mantivemos o arquivo original para não aumentar o tamanho.",
       };
     }
 
@@ -716,14 +716,14 @@
     const outputPdf = await PDFLib.PDFDocument.create();
 
     for (let pageNumber = 1; pageNumber <= sourcePdf.numPages; pageNumber += 1) {
-      onProgress(`renderizando pÃ¡gina ${pageNumber} de ${sourcePdf.numPages}...`);
+      onProgress(`renderizando página ${pageNumber} de ${sourcePdf.numPages}...`);
       const sourcePage = await sourcePdf.getPage(pageNumber);
       const baseViewport = sourcePage.getViewport({ scale: 1 });
       const viewport = sourcePage.getViewport({ scale: attempt.scale });
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d", { alpha: false });
       if (!context) {
-        throw new Error("O navegador nÃ£o conseguiu criar o canvas de processamento.");
+        throw new Error("O navegador não conseguiu criar o canvas de processamento.");
       }
       canvas.width = Math.max(1, Math.floor(viewport.width));
       canvas.height = Math.max(1, Math.floor(viewport.height));
@@ -758,7 +758,7 @@
       canvas.toBlob(
         (blob) => {
           if (!blob) {
-            reject(new Error("NÃ£o foi possÃ­vel converter a pÃ¡gina para imagem."));
+            reject(new Error("Não foi possível converter a página para imagem."));
             return;
           }
           resolve(blob);
