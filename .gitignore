@@ -1,0 +1,20 @@
+node_modules/
+.vendor/
+.env
+npm-debug.log*
+.chrome-*/
+
+storage/uploads/*
+!storage/uploads/.gitkeep
+
+downloads/*
+!downloads/.gitkeep
+
+# Arquivos locais de teste/diagnostico.
+/teste*.pdf
+/PDFA_def.ps
+/srgb.icc
+
+# Instaladores e extracoes locais do VeraPDF.
+site/veraPDF-installer.zip
+site/verapdf-install/

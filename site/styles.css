@@ -9,9 +9,15 @@
   --accent: #f97316;
   --accent-dark: #c2410c;
   --accent-soft: rgba(249, 115, 22, 0.12);
+  --accent-glow: rgba(249, 115, 22, 0.4);
+  --green: #16a34a;
+  --green-dark: #15803d;
+  --green-soft: rgba(22, 163, 74, 0.12);
+  --green-glow: rgba(22, 163, 74, 0.4);
   --success: #15803d;
   --success-soft: rgba(21, 128, 61, 0.12);
   --shadow: 0 24px 60px rgba(22, 66, 43, 0.12);
+  --shadow-strong: 0 24px 60px rgba(22, 66, 43, 0.18);
   --radius-xl: 28px;
   --radius-lg: 22px;
   --radius-md: 16px;
@@ -33,9 +39,11 @@ body {
   font-family: "Bahnschrift", "Trebuchet MS", "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(249, 115, 22, 0.2), transparent 34%),
-    radial-gradient(circle at 85% 15%, rgba(21, 128, 61, 0.18), transparent 28%),
-    linear-gradient(180deg, #ffffff 0%, #f5fbf6 100%);
+    radial-gradient(circle at 20% 10%, rgba(22, 163, 74, 0.22), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(22, 163, 74, 0.2), transparent 35%),
+    radial-gradient(circle at 50% 80%, rgba(22, 163, 74, 0.08), transparent 50%),
+    linear-gradient(180deg, #ffffff 0%, #f0faf3 100%);
+  transition: background 400ms ease;
 }
 
 body::before {
@@ -74,7 +82,7 @@ body::before {
   border-radius: 34px;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(245, 251, 246, 0.9)),
-    linear-gradient(135deg, rgba(249, 115, 22, 0.04), rgba(21, 128, 61, 0.04));
+    linear-gradient(135deg, rgba(249, 115, 22, 0.06), rgba(21, 128, 61, 0.06));
   box-shadow: var(--shadow);
   animation: rise 560ms ease;
 }
@@ -94,8 +102,13 @@ body::before {
 .section-kicker,
 .card-kicker {
   margin: 0 0 10px;
-  color: var(--accent-dark);
   font-size: 12px;
+}
+
+/* All kickers use green like PDF/A */
+.section-kicker,
+.card-kicker {
+  color: var(--green);
 }
 
 .hero h1,
@@ -108,6 +121,10 @@ body::before {
   max-width: 12ch;
   font-size: clamp(2.4rem, 5vw, 5rem);
   line-height: 0.93;
+  background: linear-gradient(135deg, var(--accent-dark) 0%, var(--green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .hero-text,
@@ -164,6 +181,21 @@ body::before {
   font-weight: 700;
 }
 
+.action-button:hover {
+  box-shadow: 0 18px 32px rgba(249, 115, 22, 0.35);
+  transform: translateY(-2px);
+}
+
+.action-button.is-green {
+  background: linear-gradient(135deg, var(--green) 0%, #4ade80 100%);
+  box-shadow: 0 14px 26px rgba(22, 163, 74, 0.3);
+}
+
+.action-button.is-green:hover {
+  box-shadow: 0 18px 32px rgba(22, 163, 74, 0.4);
+  transform: translateY(-2px);
+}
+
 .action-button:hover,
 .ghost-button:hover,
 .mini-button:hover,
@@ -191,6 +223,13 @@ body::before {
   color: var(--ink);
 }
 
+.ghost-button:hover,
+.mini-button:hover,
+.reorder-button:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 16px rgba(249, 115, 22, 0.1);
+}
+
 .wide {
   width: 100%;
   justify-content: center;
@@ -215,7 +254,7 @@ body::before {
   min-height: 32px;
   padding: 0 12px;
   border-radius: 999px;
-  background: var(--accent-soft);
+  background: var(--green-soft);
   color: var(--success);
   font-size: 12px;
 }
@@ -259,10 +298,16 @@ body::before {
   line-height: 1.5;
 }
 
+.info-ribbon.is-orange {
+  color: #9a3412;
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(249, 115, 22, 0.24);
+}
+
 .info-ribbon.is-success {
   color: #166534;
-  background: var(--success-soft);
-  border-color: rgba(21, 128, 61, 0.24);
+  background: var(--green-soft);
+  border-color: rgba(22, 163, 74, 0.24);
 }
 
 .info-ribbon.is-error {
@@ -273,10 +318,13 @@ body::before {
 
 .tab-bar {
   display: inline-grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   padding: 8px;
   border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(22, 66, 43, 0.06);
 }
 
 .tab-button {
@@ -289,12 +337,14 @@ body::before {
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  transition: all 200ms ease;
 }
 
+/* All active tabs use green like PDF/A */
 .tab-button.is-active {
-  background: rgba(21, 128, 61, 0.12);
-  color: #14532d;
-  box-shadow: 0 10px 18px rgba(21, 128, 61, 0.12);
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.15), rgba(22, 163, 74, 0.08));
+  color: var(--green);
+  box-shadow: 0 8px 20px rgba(22, 163, 74, 0.15);
 }
 
 .tab-panel {
@@ -320,6 +370,14 @@ body::before {
   line-height: 0.98;
 }
 
+/* All section headings use green gradient like PDF/A */
+[data-tab-panel] .section-heading h2 {
+  background: linear-gradient(135deg, var(--green) 0%, #4ade80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .section-note {
   max-width: 42ch;
   line-height: 1.65;
@@ -335,6 +393,17 @@ body::before {
   padding: 22px;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow);
+  transition: box-shadow 300ms ease, transform 300ms ease;
+}
+
+.tool-card:hover {
+  box-shadow: var(--shadow-strong);
+  transform: translateY(-2px);
+}
+
+/* All tool cards use green border like PDF/A */
+[data-tab-panel] .tool-card {
+  border-color: rgba(22, 163, 74, 0.2);
 }
 
 .card-header {
@@ -362,16 +431,19 @@ body::before {
   border: 1.5px dashed rgba(28, 33, 29, 0.18);
   border-radius: 24px;
   background:
-    radial-gradient(circle at top, rgba(249, 115, 22, 0.16), transparent 55%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(245, 251, 246, 0.88));
+    radial-gradient(circle at top, rgba(22, 163, 74, 0.18), transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(240, 253, 244, 0.9));
   overflow: hidden;
+  transition: border-color 250ms ease, background 250ms ease, box-shadow 250ms ease;
 }
 
+/* All dropzones use green is-over like PDF/A */
 .dropzone.is-over {
-  border-color: var(--accent);
+  border-color: var(--green);
   background:
-    radial-gradient(circle at top, rgba(249, 115, 22, 0.24), transparent 50%),
-    linear-gradient(180deg, rgba(255, 250, 245, 0.98), rgba(240, 253, 244, 0.94));
+    radial-gradient(circle at top, rgba(22, 163, 74, 0.28), transparent 50%),
+    linear-gradient(180deg, rgba(250, 255, 250, 0.98), rgba(236, 253, 240, 0.94));
+  box-shadow: 0 0 30px rgba(22, 163, 74, 0.1);
 }
 
 .dropzone input {
@@ -387,6 +459,11 @@ body::before {
   display: block;
   font-size: 1.28rem;
   font-weight: 700;
+}
+
+/* All dropzone titles use green like PDF/A */
+.dropzone-title {
+  color: var(--green);
 }
 
 .dropzone-subtitle {
@@ -442,29 +519,70 @@ body::before {
   gap: 12px;
   align-items: flex-start;
   padding: 16px;
+  padding-left: 48px;
   border-radius: 16px;
   border: 1px solid rgba(21, 128, 61, 0.12);
   background: rgba(255, 255, 255, 0.92);
   cursor: pointer;
   transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  position: relative;
 }
 
 .preset-option input {
-  margin-top: 4px;
-  accent-color: var(--success);
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.preset-option::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 18px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(21, 128, 61, 0.35);
+  background: #ffffff;
+  transition: all 200ms ease;
+  box-sizing: border-box;
+}
+
+.preset-option::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  transform: scale(0);
+  transition: transform 180ms ease;
+}
+
+.preset-option.is-selected::after,
+.preset-option:has(input:checked)::after {
+  transform: scale(1);
+}
+
+.preset-option.is-selected::before,
+.preset-option:has(input:checked)::before {
+  border-color: var(--success);
+}
+
+/* All preset options use green (no orange variants) */
+.preset-option.is-selected,
+.preset-option:has(input:checked) {
+  background: rgba(220, 252, 231, 0.45);
+  border-color: rgba(21, 128, 61, 0.25);
 }
 
 .preset-option:hover {
   transform: translateY(-1px);
-  border-color: rgba(249, 115, 22, 0.26);
+  border-color: rgba(22, 163, 74, 0.26);
   box-shadow: 0 10px 20px rgba(22, 66, 43, 0.08);
-}
-
-.preset-option.is-selected,
-.preset-option:has(input:checked) {
-  border-color: rgba(21, 128, 61, 0.28);
-  background: linear-gradient(180deg, rgba(21, 128, 61, 0.08), rgba(249, 115, 22, 0.05));
-  box-shadow: 0 12px 24px rgba(21, 128, 61, 0.08);
 }
 
 .preset-option strong,
@@ -483,7 +601,7 @@ body::before {
 
 .preset-content em {
   font-style: normal;
-  color: var(--accent-dark);
+  color: var(--green);
   font-size: 0.82rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -505,6 +623,14 @@ body::before {
   border-radius: 14px;
   font: inherit;
   background: #ffffff;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.field-group input:focus,
+.field-group textarea:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
 }
 
 .field-group textarea {
@@ -549,6 +675,12 @@ body::before {
   gap: 12px;
   padding: 16px;
   border-radius: 18px;
+  transition: box-shadow 200ms ease;
+}
+
+.file-item:hover,
+.result-item:hover {
+  box-shadow: 0 4px 16px rgba(22, 66, 43, 0.06);
 }
 
 .file-item-head,
@@ -597,11 +729,20 @@ body::before {
   border-radius: 12px;
 }
 
+.reorder-button:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+}
+
 .download-button {
   min-height: 44px;
   padding: 0 16px;
   border-radius: 999px;
   font-weight: 700;
+}
+
+.download-button:hover {
+  box-shadow: 0 14px 26px rgba(249, 115, 22, 0.24);
 }
 
 .result-badge {
@@ -629,6 +770,12 @@ body::before {
   border-color: rgba(249, 115, 22, 0.2);
 }
 
+.result-badge.is-error {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
 .result-item.is-original {
   border-color: rgba(249, 115, 22, 0.24);
 }
@@ -642,7 +789,7 @@ body::before {
 }
 
 .status-line.is-running {
-  color: var(--accent-dark);
+  color: var(--green);
 }
 
 .status-line.is-success {
@@ -665,7 +812,6 @@ body::before {
 }
 
 @media (max-width: 980px) {
-  .hero,
   .tool-grid,
   .section-heading {
     grid-template-columns: 1fr;

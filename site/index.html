@@ -6,7 +6,7 @@
   <title>Pdf Rumos</title>
   <meta name="description" content="Comprima e una PDFs direto no navegador, sem instalar Python ou Ghostscript nos computadores dos usuários.">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:; worker-src 'self' blob:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; connect-src 'self' blob:; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:; worker-src 'self' blob:;">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()">
   <link rel="stylesheet" href="./styles.css">
   <link rel="icon" type="image/x-icon" href="./favicon.ico">
@@ -14,16 +14,18 @@
 <body>
   <div class="page-shell">
     <main class="workspace">
-      <section class="info-ribbon" id="dependency-status" aria-live="polite">
-        Verificando recursos do navegador...
+      <section class="info-ribbon is-orange" id="dependency-status" aria-live="polite">
+        Comprima seus arquivos PDF para reduzir o tamanho sem precisar instalar programas, facilitando o compartilhamento e o armazenamento.
       </section>
 
       <nav class="tab-bar" aria-label="Modos do projeto">
         <button class="tab-button is-active" data-tab-button="compressao">Comprimir</button>
         <button class="tab-button" data-tab-button="uniao">Unir</button>
         <button class="tab-button" data-tab-button="divisao">Dividir</button>
+        <button class="tab-button" data-tab-button="pdfa">PDF/A</button>
       </nav>
 
+      <!-- Modo 01: Comprimir -->
       <section class="tab-panel is-active" data-tab-panel="compressao">
         <div class="section-heading">
           <div>
@@ -118,6 +120,7 @@
         </div>
       </section>
 
+      <!-- Modo 02: Unir -->
       <section class="tab-panel" data-tab-panel="uniao">
         <div class="section-heading">
           <div>
@@ -178,7 +181,7 @@
         </div>
       </section>
 
-
+      <!-- Modo 03: Dividir -->
       <section class="tab-panel" data-tab-panel="divisao">
         <div class="section-heading">
           <div>
@@ -209,11 +212,11 @@
             <div class="preset-card">
               <div class="preset-header">
                 <div>
-                  <p class="card-kicker">Divis&atilde;o</p>
+                  <p class="card-kicker">Divisão</p>
                   <h4>Escolha como separar</h4>
                 </div>
                 <p class="preset-note">
-                  Use intervalos como 1-3, 4-6 ou divida todas as p&aacute;ginas individualmente.
+                  Use intervalos como 1-3, 4-6 ou divida todas as páginas individualmente.
                 </p>
               </div>
               <div class="preset-list">
@@ -221,15 +224,15 @@
                   <input type="radio" name="split-mode" value="ranges" checked>
                   <span class="preset-content">
                     <strong>Intervalos personalizados</strong>
-                    <small>Informe grupos de p&aacute;ginas separados por v&iacute;rgula.</small>
+                    <small>Informe grupos de páginas separados por vírgula.</small>
                     <em>Exemplo: 1-3, 4-6</em>
                   </span>
                 </label>
                 <label class="preset-option">
                   <input type="radio" name="split-mode" value="pages">
                   <span class="preset-content">
-                    <strong>Uma p&aacute;gina por arquivo</strong>
-                    <small>Gera um PDF separado para cada p&aacute;gina do documento.</small>
+                    <strong>Uma página por arquivo</strong>
+                    <small>Gera um PDF separado para cada página do documento.</small>
                     <em>Ideal para lotes simples</em>
                   </span>
                 </label>
@@ -237,7 +240,7 @@
             </div>
 
             <label class="field-group" for="split-ranges" id="split-ranges-group">
-              <span>Intervalos de p&aacute;ginas</span>
+              <span>Intervalos de páginas</span>
               <textarea id="split-ranges" rows="3" placeholder="1-3, 4-6" autocomplete="off"></textarea>
             </label>
 
@@ -265,6 +268,63 @@
 
             <div class="result-list" id="split-results">
 
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Modo 04: PDF/A -->
+      <section class="tab-panel" data-tab-panel="pdfa">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Modo 04</p>
+            <h2>Converta e valide em PDF/A</h2>
+          </div>
+          <p class="section-note">
+            Envie um PDF para o servidor da aplicação gerar PDF/A-2b com validação antes de liberar o download.
+          </p>
+        </div>
+
+        <div class="tool-grid">
+          <article class="tool-card">
+            <div class="card-header">
+              <div>
+                <p class="card-kicker">Entrada</p>
+                <h3>Arquivo para PDF/A</h3>
+              </div>
+              <button class="mini-button" id="clear-pdfa-file" type="button">Limpar</button>
+            </div>
+
+            <label class="dropzone" id="pdfa-dropzone">
+              <input id="pdfa-input" type="file" accept="application/pdf,.pdf">
+              <span class="dropzone-title">Arraste um PDF aqui</span>
+              <span class="dropzone-subtitle">ou clique para selecionar o arquivo</span>
+            </label>
+
+            <div class="action-row">
+              <button class="action-button wide" id="start-pdfa" type="button">Converter para PDF/A</button>
+              <button class="action-button wide is-green" id="validate-pdfa" type="button">Validar PDF/A</button>
+            </div>
+          </article>
+
+          <article class="tool-card">
+            <div class="card-header">
+              <div>
+                <p class="card-kicker">Resultado</p>
+                <h3>Arquivo gerado</h3>
+              </div>
+              <span class="count-pill" id="pdfa-count">0 arquivo</span>
+            </div>
+            <div class="file-list" id="pdfa-file-list">
+              <p class="empty-state">Nenhum PDF selecionado ainda.</p>
+            </div>
+
+            <div class="status-card">
+              <p class="card-kicker">Status</p>
+              <div class="status-line" id="pdfa-status">Aguardando arquivo.</div>
+            </div>
+
+            <div class="result-list" id="pdfa-results">
             </div>
           </article>
         </div>
