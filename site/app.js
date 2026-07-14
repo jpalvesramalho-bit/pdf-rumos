@@ -21,14 +21,21 @@
   const startCompressButton = document.getElementById("start-compress");
   const startMergeButton = document.getElementById("start-merge");
   const startSplitButton = document.getElementById("start-split");
+  const pdfaInput = document.getElementById("pdfa-input");
+  const pdfaFileList = document.getElementById("pdfa-file-list");
+  const pdfaCount = document.getElementById("pdfa-count");
+  const startPdfaButton = document.getElementById("start-pdfa");
+  const validatePdfaButton = document.getElementById("validate-pdfa");
 
   const state = {
     compressFiles: [],
     mergeFiles: [],
     splitFile: null,
+    pdfaFile: null,
     compressResults: [],
     mergeResult: null,
     splitParts: [],
+    pdfaResult: null,
     splitZipResult: null,
     processing: false,
   };
@@ -63,6 +70,189 @@
     },
   };
 
+  function handlePdfaDrop(files) {
+    addPdfaFile(files);
+  }
+
+  function addPdfaFile(fileList) {
+    const files = filterPdfFiles(fileList);
+    if (!files.length) {
+      setPdfaStatus("Selecione um arquivo PDF válido.", "error");
+      return;
+    }
+
+    state.pdfaFile = files[0];
+    resetPdfaResult();
+    setPdfaStatus(`${state.pdfaFile.name} pronto para processamento.`, "");
+    renderPdfaFile();
+  }
+
+  function renderPdfaFile() {
+    pdfaCount.textContent = formatFileCount(state.pdfaFile ? 1 : 0);
+    if (!state.pdfaFile) {
+      pdfaFileList.innerHTML = '<p class="empty-state">Nenhum PDF selecionado ainda.</p>';
+      return;
+    }
+
+    pdfaFileList.innerHTML = `
+      <div class="file-item">
+        <div class="file-item-head">
+          <div class="file-meta">
+            <div class="file-name">${escapeHtml(state.pdfaFile.name)}</div>
+            <div class="file-subline">${formatBytes(state.pdfaFile.size)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function resetPdfaResult() {
+    if (state.pdfaResult && state.pdfaResult.url) {
+      URL.revokeObjectURL(state.pdfaResult.url);
+    }
+    state.pdfaResult = null;
+  }
+
+  function setPdfaStatus(message, type) {
+    const pdfaStatus = document.getElementById("pdfa-status");
+    if (pdfaStatus) {
+      setStatus(pdfaStatus, message, type);
+    }
+  }
+
+  async function processPdfaConvert() {
+    if (state.processing) {
+      return;
+    }
+
+    if (!state.pdfaFile) {
+      setPdfaStatus("Selecione um arquivo PDF para converter.", "error");
+      return;
+    }
+
+    state.processing = true;
+    disableActions(true);
+    resetPdfaResult();
+
+    setPdfaStatus("Convertendo para PDF/A-2b...", "running");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", state.pdfaFile);
+
+      const response = await fetch("/api/pdf/convert-to-pdfa", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || `Erro ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (!data.downloadUrl) {
+        throw new Error("Servidor não retornou URL de download");
+      }
+
+      const downloadResponse = await fetch(data.downloadUrl);
+      const blob = await downloadResponse.blob();
+      const url = URL.createObjectURL(blob);
+      const outputName = `${state.pdfaFile.name.replace(/\.pdf$/i, "")}_pdfa.pdf`;
+
+      state.pdfaResult = {
+        outputName,
+        url,
+        size: blob.size,
+        level: data.pdfaLevel || "PDF/A-2b",
+        validated: data.validated,
+      };
+
+      renderPdfaResult();
+      setPdfaStatus("Conversão concluída com sucesso!", "success");
+    } catch (error) {
+      console.error(error);
+      setPdfaStatus(`Erro na conversão: ${error.message}`, "error");
+    } finally {
+      state.processing = false;
+      disableActions(false);
+    }
+  }
+
+  async function processPdfaValidate() {
+    if (state.processing) {
+      return;
+    }
+
+    if (!state.pdfaFile) {
+      setPdfaStatus("Selecione um arquivo PDF para validar.", "error");
+      return;
+    }
+
+    state.processing = true;
+    disableActions(true);
+
+    setPdfaStatus("Validando PDF/A...", "running");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", state.pdfaFile);
+
+      const response = await fetch("/api/pdf/validate-pdfa", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || `Erro ${response.status}`);
+      }
+
+      const data = await response.json();
+      const level = data.detectedStandard || "Não é PDF/A";
+      const status = data.compliant ? "válido" : "inválido";
+
+      setPdfaStatus(
+        `PDF/A ${status}. Padrão detectado: ${level}. Conformidade: ${data.compliant ? "Sim" : "Não"}`,
+        data.compliant ? "success" : "error"
+      );
+    } catch (error) {
+      console.error(error);
+      setPdfaStatus(`Erro na validação: ${error.message}`, "error");
+    } finally {
+      state.processing = false;
+      disableActions(false);
+    }
+  }
+
+  function renderPdfaResult() {
+    const pdfaResults = document.getElementById("pdfa-results");
+    if (!pdfaResults) return;
+
+    if (!state.pdfaResult) {
+      pdfaResults.innerHTML = '<p class="empty-state">O arquivo PDF/A aparecerá aqui para download.</p>';
+      return;
+    }
+
+    pdfaResults.innerHTML = `
+      <div class="result-item">
+        <div class="result-item-head">
+          <div class="result-meta">
+            <div class="result-name">${escapeHtml(state.pdfaResult.outputName)}</div>
+            <div class="result-subline">${formatBytes(state.pdfaResult.size)} | Padrão: ${state.pdfaResult.level} | Validado: ${state.pdfaResult.validated ? "Sim" : "Não"}</div>
+          </div>
+          <div class="result-actions">
+            <button class="download-button" type="button" id="download-pdfa-result">Baixar PDF/A</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("download-pdfa-result").addEventListener("click", () => {
+      downloadFile(state.pdfaResult.url, state.pdfaResult.outputName);
+    });
+  }
+
   function init() {
     if (!window.PDFLib || !window.pdfjsLib || !window.JSZip) {
       setDependencyError(
@@ -84,6 +274,7 @@
     bindDropzone("compress-dropzone", handleCompressDrop);
     bindDropzone("merge-dropzone", handleMergeDrop);
     bindDropzone("split-dropzone", handleSplitDrop);
+    bindDropzone("pdfa-dropzone", handlePdfaDrop);
 
     compressInput.addEventListener("change", (event) => {
       addCompressFiles(event.target.files);
@@ -98,6 +289,11 @@
     splitInput.addEventListener("change", (event) => {
       addSplitFile(event.target.files);
       splitInput.value = "";
+    });
+
+    pdfaInput.addEventListener("change", (event) => {
+      addPdfaFile(event.target.files);
+      pdfaInput.value = "";
     });
 
     document.getElementById("clear-compress-files").addEventListener("click", () => {
@@ -127,9 +323,18 @@
       renderSplitFile();
     });
 
+    document.getElementById("clear-pdfa-file").addEventListener("click", () => {
+      state.pdfaFile = null;
+      resetPdfaResult();
+      setPdfaStatus("Aguardando arquivo.", "");
+      renderPdfaFile();
+    });
+
     startCompressButton.addEventListener("click", processCompression);
     startMergeButton.addEventListener("click", processMerge);
     startSplitButton.addEventListener("click", processSplit);
+    startPdfaButton.addEventListener("click", processPdfaConvert);
+    validatePdfaButton.addEventListener("click", processPdfaValidate);
 
     renderCompressFiles();
     renderCompressResults();
@@ -137,6 +342,7 @@
     renderMergeResult();
     renderSplitFile();
     renderSplitResults();
+    renderPdfaFile();
   }
 
   function bindTabs() {
@@ -837,7 +1043,7 @@
   }
 
   function setDependencySuccess(message) {
-    dependencyStatus.textContent = message;
+    dependencyStatus.innerHTML = `<img src="./favicon-32x32.png" alt="" class="dependency-icon"> ${message}`;
     dependencyStatus.classList.add("is-success");
     dependencyStatus.classList.remove("is-error");
   }
@@ -852,6 +1058,8 @@
     startCompressButton.disabled = disabled;
     startMergeButton.disabled = disabled;
     startSplitButton.disabled = disabled;
+    startPdfaButton.disabled = disabled;
+    validatePdfaButton.disabled = disabled;
   }
 
   function getSelectedPreset() {

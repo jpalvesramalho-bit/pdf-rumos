@@ -1,0 +1,115 @@
+# --------------------------------------------------------
+# VHOSTS - HTTP (Porta 80)
+# --------------------------------------------------------
+
+# Redirecionamento ou acesso principal HTTP
+<VirtualHost *:80>
+    DocumentRoot "C:/xampp/htdocs/"
+    ServerName rumospetroleo.com.br 
+
+    # PDFFLOW PROXY - BEGIN
+    # Proxy para a aplicação Node.js local (pdfflow)
+    ProxyRequests Off
+    ProxyPreserveHost On
+
+    RewriteEngine On
+    RewriteRule ^/flow/pdfflow$ /flow/pdfflow/ [R=301,L]
+
+    ProxyPass        /flow/pdfflow/ http://127.0.0.1:3000/ retry=0 timeout=180
+    ProxyPassReverse /flow/pdfflow/ http://127.0.0.1:3000/
+
+    RequestHeader set X-Forwarded-Proto "http"
+    RequestHeader set X-Forwarded-Prefix "/flow/pdfflow"
+    ProxyTimeout 180
+    # PDFFLOW PROXY - END
+
+</VirtualHost>
+
+# --------------------------------------------------------
+# VHOSTS - HTTPS (Porta 443)
+# --------------------------------------------------------
+
+# 1. Subdomínio Ética
+<VirtualHost *:443>
+    DocumentRoot "C:/xampp/htdocs/site_rumos/"
+    ServerName etica.rumospetroleo.com.br 
+    
+    ErrorLog "logs/https_etica.rumospetroleo.com.br-error.log"
+    CustomLog "logs/https_etica.rumospetroleo.com.br-access.log" common
+    
+    SSLEngine on
+    SSLCertificateFile "C:/SSL/crm.rumospetroleo.com.br.crt"
+    SSLCertificateKeyFile "C:/SSL/crm.rumospetroleo.com.br.key"
+</VirtualHost>
+
+# 2. Site Principal (Rumos Petróleo)
+<VirtualHost *:443>
+    # RECOMENDAÇÃO: Mover os arquivos soltos do htdocs para uma pasta específica
+    DocumentRoot "C:/xampp/htdocs/"
+    ServerName rumospetroleo.com.br 
+    
+    ErrorLog "logs/https_rumospetroleo.com.br-error.log"
+    CustomLog "logs/https_rumospetroleo.com.br-access.log" common
+
+    <Directory "C:/xampp/htdocs/">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    # PDFFLOW PROXY - BEGIN
+    # Proxy para a aplicação Node.js local (pdfflow)
+    ProxyRequests Off
+    ProxyPreserveHost On
+
+    RewriteEngine On
+    RewriteRule ^/flow/pdfflow$ /flow/pdfflow/ [R=301,L]
+
+    ProxyPass        /flow/pdfflow/ http://127.0.0.1:3000/ retry=0 timeout=180
+    ProxyPassReverse /flow/pdfflow/ http://127.0.0.1:3000/
+
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Prefix "/flow/pdfflow"
+    ProxyTimeout 180
+    # PDFFLOW PROXY - END
+
+    SSLEngine on
+    SSLCertificateFile "C:/SSL/crm.rumospetroleo.com.br.crt"
+    SSLCertificateKeyFile "C:/SSL/crm.rumospetroleo.com.br.key"
+</VirtualHost>
+
+ #--------------------------------------------------------
+ #NOVO SITE JS - (Exemplo como Site Estático)
+ #--------------------------------------------------------
+
+ #3. Novo Site ou Landing Page em JS
+ 
+ # --------------------------------------------------------
+# PROXY RAMAIS - HTTP (Porta 80)
+# --------------------------------------------------------
+<VirtualHost *:80>
+    ServerName ramais.rumospetroleo.com.br
+    
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:3000/
+    ProxyPassReverse / http://localhost:3000/   
+</VirtualHost>
+
+# --------------------------------------------------------
+# PROXY RAMAIS - HTTPS (Porta 443)
+# --------------------------------------------------------
+<VirtualHost *:443>
+    ServerName ramais.rumospetroleo.com.br
+    
+    ErrorLog "logs/https_ramais.rumospetroleo.com.br-error.log"
+    CustomLog "logs/https_ramais.rumospetroleo.com.br-access.log" common
+
+    ProxyPreserveHost On
+    ProxyPass / http://localhost:3000/
+    ProxyPassReverse / http://localhost:3000/   
+
+    # Configuração de SSL direta no Apache
+    SSLEngine on
+    SSLCertificateFile "C:/SSL/crm.rumospetroleo.com.br.crt"
+    SSLCertificateKeyFile "C:/SSL/crm.rumospetroleo.com.br.key"
+</VirtualHost>

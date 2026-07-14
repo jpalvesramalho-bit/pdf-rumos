@@ -226,8 +226,8 @@ body::before {
 .ghost-button:hover,
 .mini-button:hover,
 .reorder-button:hover {
-  border-color: var(--accent);
-  box-shadow: 0 8px 16px rgba(249, 115, 22, 0.1);
+  border-color: var(--green);
+  box-shadow: 0 8px 16px rgba(22, 163, 74, 0.2);
 }
 
 .wide {
@@ -314,6 +314,13 @@ body::before {
   color: #7f1d1d;
   background: rgba(239, 68, 68, 0.12);
   border-color: rgba(239, 68, 68, 0.24);
+}
+
+.dependency-icon {
+  height: 24px;
+  width: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
 .tab-bar {

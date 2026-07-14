@@ -1,0 +1,67 @@
+# --------------------------------------------------------
+# VHOSTS - HTTP (Porta 80)
+# --------------------------------------------------------
+
+<VirtualHost *:80>
+    ServerName rumospetroleo.com.br
+    DocumentRoot "C:/xampp/htdocs/"
+
+    ErrorLog "logs/http_rumospetroleo.com.br-error.log"
+    CustomLog "logs/http_rumospetroleo.com.br-access.log" common
+
+    <Directory "C:/xampp/htdocs/">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    RewriteEngine On
+    RewriteRule ^/flow/pdfflow$ /flow/pdfflow/ [R=301,L]
+
+    ProxyRequests Off
+    ProxyPreserveHost On
+
+    ProxyPass        /flow/pdfflow/ http://127.0.0.1:3000/ retry=0 timeout=180
+    ProxyPassReverse /flow/pdfflow/ http://127.0.0.1:3000/
+
+    RequestHeader set X-Forwarded-Proto "http"
+    RequestHeader set X-Forwarded-Prefix "/flow/pdfflow"
+    ProxyTimeout 180
+</VirtualHost>
+
+# --------------------------------------------------------
+# VHOSTS - HTTPS (Porta 443)
+# --------------------------------------------------------
+
+<VirtualHost *:443>
+    ServerName rumospetroleo.com.br
+    DocumentRoot "C:/xampp/htdocs/"
+
+    ErrorLog "logs/https_rumospetroleo.com.br-error.log"
+    CustomLog "logs/https_rumospetroleo.com.br-access.log" common
+
+    <Directory "C:/xampp/htdocs/">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    RewriteEngine On
+    RewriteRule ^/flow/pdfflow$ /flow/pdfflow/ [R=301,L]
+
+    ProxyRequests Off
+    ProxyPreserveHost On
+
+    ProxyPass        /flow/pdfflow/ http://127.0.0.1:3000/ retry=0 timeout=180
+    ProxyPassReverse /flow/pdfflow/ http://127.0.0.1:3000/
+
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Prefix "/flow/pdfflow"
+    ProxyTimeout 180
+
+    SSLEngine on
+    SSLCertificateFile "C:/SSL/crm.rumospetroleo.com.br.crt"
+    SSLCertificateKeyFile "C:/SSL/crm.rumospetroleo.com.br.key"
+</VirtualHost>
+
+ #3. Novo Site ou Landing Page em JS

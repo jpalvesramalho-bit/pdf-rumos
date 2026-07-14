@@ -272,7 +272,7 @@ async function convertToPdfA(uploadedFile) {
       success: true,
       pdfaLevel: validation.detectedStandard || "PDF/A-2b",
       validated: true,
-      downloadUrl: `/downloads/${encodeURIComponent(outputName)}`,
+      downloadUrl: `downloads/${encodeURIComponent(outputName)}`,
     };
   } catch (error) {
     await safeUnlink(outputPath);
